@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"name": "Sfortzando",
+			"path": "."
+		}
+	],
+    "settings":
+    {
+        "default_line_ending": "unix"
+    }
+}

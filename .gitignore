@@ -1,0 +1,102 @@
+# .gitignore
+$RECYCLE.BIN/
+*$py.class
+*,cover
+*.cab
+*.DS_Store
+*.egg
+*.egg-info/
+*.lnk
+*.log
+*.manifest
+*.mo
+*.msi
+*.msm
+*.msp
+*.pot
+*.py[cod]
+*.so
+*.spec
+*.stTheme.cache
+*.sublime-workspace
+*.tmlanguage.cache
+*.tmPreferences.cache
+*~
+._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.cache
+.com.apple.timemachine.donotpresent
+.coverage
+.coverage.*
+.directory
+.DocumentRevisions-V100
+.eggs/
+.env
+.fseventsd
+.fuse_hidden*
+.hypothesis/
+.installed.cfg
+.ipynb_checkpoints
+.LSOverride
+.netrwhist
+.[Pp]ython
+.python-version
+.ropeproject
+.scrapy
+.Spotlight-V100
+.spyderproject
+.TemporaryItems
+.tox/
+.Trash-*
+.Trashes
+.VolumeIcon.icns
+.webassets-cache
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+[Ss]ession.vim
+__pycache__/
+bh_unicode_properties.cache
+build/
+celerybeat-schedule
+coverage.xml
+Desktop.ini
+develop-eggs/
+dist/
+docs/_build/
+downloads/
+eggs/
+ehthumbs.db
+env/
+ENV/
+env3/
+ENV3/
+GitHub.sublime-settings
+htmlcov/
+Icon
+instance/
+lib/
+lib64/
+#local_settings.py
+Network Trash Folder
+nosetests.xml
+Package Control.ca-bundle
+Package Control.ca-certs/
+Package Control.ca-list
+Package Control.cache/
+Package Control.last-run
+Package Control.system-ca-bundle
+parts/
+pip-delete-this-directory.txt
+pip-log.txt
+sdist/
+sftp-config.json
+tags
+target/
+Temporary Items
+Thumbs.db
+var/
+venv/
+venv3/
