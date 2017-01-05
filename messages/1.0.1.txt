@@ -1,0 +1,4 @@
+* 1.0.1: Initial release
+    - Updated version of syntax highlighting scheme for ABC Notation, conforming to the [ABC Standard, version 2.1](http://abcnotation.com/wiki/abc:standard:v2.1).
+    - Added PostScript syntax files from [Briles/sublime-syntax-postscript](https://github.com/Briles/sublime-syntax-postscript) in case the dependency isn't met
+    - Defined beginning completions & snippets

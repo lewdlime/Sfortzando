@@ -1,0 +1,37 @@
+{
+	"schema_version": "3.0.0",
+	"packages": [
+		{
+			"name": "Sfortzando",
+			"details": "https://github.com/leesavide/sfortzando",
+			"donate": "https://gratipay.com/leesavide/",
+			"issues": "https://github.com/leesavide/sfortzando/issues",
+			"readme": "https://raw.githubusercontent.com/leesavide/sfortzando/master/README.md",
+			"labels": ["auto-complete", "browser integration", "build system", "code navigation", "formatting", "language syntax", "linting", "search", "snippets", "text manipulation"],
+			"author": "leesavide",
+			"releases": [
+				{
+					"sublime_text": "<3000",
+					"tags": true,
+					"dependencies": ["PostScript"]
+				}
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"name": "PostScript",
+			"load_order": "02",
+			"description": "Sublime Syntax for Adobe PostScript 3",
+			"author": "Briles",
+			"issues": "https://github.com/Briles/sublime-syntax-postscript/issues",
+			"releases": [
+				{
+					"base": "https://github.com/Briles/sublime-syntax-postscript",
+					"tags": true,
+					"sublime_text": "*"
+				}
+			]
+		}
+	]
+}
