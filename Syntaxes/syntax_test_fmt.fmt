@@ -1641,5 +1641,5 @@ dynalign 0
 %dynamic 2
 %volume 2
 setdefl true
-%       ^^^^ storage.type.directive.fmt
+%       ^^^^ storage.type.boolean.fmt
 %========= end of ps.fmt ===================
