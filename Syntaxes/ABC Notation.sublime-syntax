@@ -305,7 +305,7 @@ contexts:
   # The following 3 contexts cover highlighting of directives,
   # instruction fields, & inline instruction fields.
   directive:
-    - match: '(%%)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)\w+)\b'
+    - match: '(%%)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)[-\w]+)\b'
       scope: meta.directive.abc comment.line.percentage.directive.abc
       captures:
         1: punctuation.definition.comment.abc
@@ -344,7 +344,7 @@ contexts:
 
   instruction-field:
     - comment: Instruction Field
-      match: '^(I:)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)\w+)\b'
+      match: '^(I:)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)[-\w]+)\b'
       captures:
         1: entity.name.tag.instruction.abc
         2: keyword.operator.word.directive.abc
@@ -375,7 +375,7 @@ contexts:
 
   inline-instruction:
     - comment: Inline Instruction Field
-      match: ((?>\[I:)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)\w+)\b)
+      match: ((?>\[I:)\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)[-\w]+)\b)
       captures:
         1: entity.name.tag.inline-field.instruction.abc
         2: keyword.operator.word.instruction.abc
