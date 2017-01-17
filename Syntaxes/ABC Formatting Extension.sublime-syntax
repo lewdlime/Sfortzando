@@ -41,7 +41,7 @@ contexts:
       match: '(?:&#x\h+;)'
 
   directive:
-    - match: '^\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)\w+)\b'
+    - match: '^\s*((?!(?:begin|end(?:text|svg|ps|js|md|ml))|postscript|ps)[-\w]+)\b'
       scope: meta.directive.abc
       captures:
         1: keyword.operator.word.directive.fmt
@@ -49,19 +49,16 @@ contexts:
         - meta_content_scope: variable.parameter.directive.fmt
         - include: midi-keywords
         - scope: storage.type.numeric.fmt
-          match: '\b(\d*(?:\.\d*)?)(?!pt|in|cm)'
-        - scope: constant.numeric.float.length-unit.fmt
-          match: '(\d*(?:\.\d*)?(?:pt|in|cm)?)'
+          match: '\b(?!-)(\d+(?:\.\d+)?(?:pt|in|cm)?)\b'
         - match: '(?i)\b(true|false|yes|no|on|off)\b'
           scope: storage.type.directive.fmt
         - include: comments
         - match: $
           pop: true
     - comment: Inline Postscript Instructions
-      match: '(%%)\s*(postscript|ps)\b'
+      match: '^\s*(postscript|ps)\b'
       captures:
-        1: comment.line.percentage.fmt
-        2: support.function.directive.fmt
+        1: support.function.directive.fmt
       push: 'scope:source.ps'
       with_prototype:
         - include: comments
