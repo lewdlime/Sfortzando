@@ -48,18 +48,8 @@ contexts:
       push:
         - meta_content_scope: variable.parameter.directive.fmt
         - include: midi-keywords
-<<<<<<< HEAD
-        - scope: storage.type.numeric.fmt
-          match: '\b(?!-)(\d+(?:\.\d+)?(?:pt|in|cm)?)\b'
-||||||| merged common ancestors
-        - scope: storage.type.numeric.fmt
-          match: '\b(\d*(?:\.\d*)?)(?!pt|in|cm)'
-        - scope: constant.numeric.float.length-unit.fmt
-          match: '(\d*(?:\.\d*)?(?:pt|in|cm)?)'
-=======
         - match: '\b(?!-)(\d+(?:\.\d+)?(?:pt|in|cm)?)\b'
           scope: storage.type.numeric.fmt
->>>>>>> 1.0.4
         - match: '(?i)\b(true|false|yes|no|on|off)\b'
           scope: storage.type.boolean.fmt
         - include: comments
