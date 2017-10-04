@@ -628,7 +628,7 @@ contexts:
             2: support.function.directive.abc
           pop: true
     - comment: Embedded PostScript
-      match: '(%%)\s*(beginps)(\s+(?:nosvg))?\b'
+      match: '(%%)\s*(beginps)(\s+(?:nosvg|svg))?\b'
       captures:
         1: comment.line.percentage.abc
         2: support.function.directive.abc
