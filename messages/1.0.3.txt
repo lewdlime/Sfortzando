@@ -1,0 +1,2 @@
+* 1.0.3: Bugfixes
+    - Hotfix for errors in ABC Notation & ABC Formatting Extension syntaxes highlighting numbers incorrectly.

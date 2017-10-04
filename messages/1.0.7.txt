@@ -1,0 +1,3 @@
+* 1.0.7: Syntax Fallback Definitions
+    - Added fallback tmLanguage files for each syntax definition.
+    - Updated Comments.tmPreferences to include ABC Formatting Extension comments.

@@ -1,0 +1,3 @@
+* 1.0.2: Bugfixes
+    - Added ABC Formatting Extension syntax & syntax test file.
+    - Modified PostScript syntax to not break highlighting when brackets do not pop out of the stack.

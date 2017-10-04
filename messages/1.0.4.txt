@@ -1,0 +1,2 @@
+* 1.0.4: Bugfixes
+    - Small fixes for ABC Notation & ABC Formatting Extension syntaxes, where directives wouldn't fully match `setfont-1`, `setfont-2`, etc., and `%%postscript` did not get changed to correct regular expression in ABC Formatting Extension syntax.

@@ -1,0 +1,2 @@
+* 1.0.5: Bugfixes
+    - Fixed error with merge from previous commit.
