@@ -854,7 +854,7 @@
         </dict>
         <dict>
           <key>begin</key>
-          <string>(%%)\s*(beginps)(\s+(?:nosvg))?\b</string>
+          <string>(%%)\s*(beginps)(\s+(?:nosvg|svg))?\b</string>
           <key>beginCaptures</key>
           <dict>
             <key>1</key>

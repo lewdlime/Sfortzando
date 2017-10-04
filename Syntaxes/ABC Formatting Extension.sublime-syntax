@@ -127,7 +127,7 @@ contexts:
             1: support.function.directive.fmt
           pop: true
     - comment: Embedded PostScript
-      match: '^\s*(beginps)(\s+(?:nosvg))?\b'
+      match: '^\s*(beginps)(\s+(?:nosvg|svg))?\b'
       captures:
         1: support.function.directive.fmt
         2: variable.parameter.directive.fmt
