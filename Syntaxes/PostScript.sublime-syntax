@@ -1,184 +1,121 @@
 %YAML 1.2
 ---
-# Copyright (c) 2016 Brian Reilly
-#
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this software and associated documentation files (the "Software"),
-# to deal in the Software without restriction, including without limitation
-# the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# and/or sell copies of the Software, and to permit persons to whom the
-# Software is furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-# DEALINGS IN THE SOFTWARE.
-
-name: PostScript
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Postscript
 file_extensions:
   - ps
-scope: source.ps
+  - eps
+first_line_match: ^%!PS
+scope: source.postscript
 contexts:
   main:
-    - include: expressions
-
-  expressions:
-    - include: comments
-    - include: numbers
-    - include: operators
-    - include: dictionaries # include `dictionaries` before `strings`
-    - include: strings
-    # - include: brackets # Brackets are broken, and do not highlight correctly.
-    - include: constants
-    - include: variables # include `variables` last
-
-  comments:
-    - match: '%'
-      scope: punctuation.definition.comment.ps
+    - match: \(
+      captures:
+        0: punctuation.definition.string.begin.postscript
       push:
-        - meta_scope: comment.line.ps
-        - match: \n
+        - meta_scope: string.other.postscript
+        - match: \)
+          captures:
+            0: punctuation.definition.string.end.postscript
           pop: true
-
-  numbers:
-    # radix numbers, signed integers, & real numbers
-    - match: |-
-        (?x)
-          (((3[0-6]|[1-2][0-9]|[2-9])\#[[:alnum:]]+)|
-          ((((\+|-)?\d+\.?\d*)|((\+|-)?\.\d+))((e|E)(\+|-)?\d+)?))(?=[()<>\[\]{}/%\s]+)
-      scope: constant.numeric.ps
-
-  string_escaped_char:
-    - match: '\\([0-7]{1,3}|[nrtbf(\\)])'
-      scope: constant.character.escape.c
-
-  inside_string_literal:
+        - include: string_content
+    - match: ^(%%(BeginBinary:|BeginCustomColor:|BeginData:|BeginDefaults|BeginDocument:|BeginEmulation:|BeginExitServer:|BeginFeature:|BeginFile:|BeginFont:|BeginObject:|BeginPageSetup:|BeginPaperSize:|BeginPreview:|BeginProcSet|BeginProcessColor:|BeginProlog|BeginResource:|BeginSetup|BoundingBox:|CMYKCustomColor:|ChangeFont:|Copyright:|CreationDate:|Creator:|DocumentCustomColors:|DocumentData:|DocumentFonts:|DocumentMedia:|DocumentNeededFiles:|DocumentNeededFonts:|DocumentNeededProcSets:|DocumentNeededResources:|DocumentPaperColors:|DocumentPaperForms:|DocumentPaperSizes:|DocumentPaperWeights:|DocumentPrinterRequired:|DocumentProcSets:|DocumentProcessColors:|DocumentSuppliedFiles:|DocumentSuppliedFonts:|DocumentSuppliedProcSets:|DocumentSuppliedResources:|EOF|Emulation:|EndBinary:|EndComments|EndCustomColor:|EndData:|EndDefaults|EndDocument:|EndEmulation:|EndExitServer:|EndFeature:|EndFile:|EndFont:|EndObject:|EndPageSetup:|EndPaperSize:|EndPreview:|EndProcSet|EndProcessColor:|EndProlog|EndResource:|EndSetup|ExecuteFile:|Extensions:|Feature:|For:|IncludeDocument:|IncludeFeature:|IncludeFile:|IncludeFont:|IncludeProcSet:|IncludeResource:|LanguageLevel:|OperatorIntervention:|OperatorMessage:|Orientation:|Page:|PageBoundingBox:|PageCustomColors|PageCustomColors:|PageFiles:|PageFonts:|PageMedia:|PageOrder:|PageOrientation:|PageProcessColors|PageProcessColors:|PageRequirements:|PageResources:|PageTrailer|Pages:|PaperColor:|PaperForm:|PaperSize:|PaperWeight:|ProofMode:|RGBCustomColor:|Requirements:|Routing:|Title:|Trailer|VMlocation:|VMusage:|Version|Version:|\+|\?BeginFeatureQuery:|\?BeginFileQuery:|\?BeginFontListQuery:|\?BeginFontQuery:|\?BeginPrinterQuery:|\?BeginProcSetQuery:|\?BeginQuery:|\?BeginResourceListQuery:|\?BeginResourceQuery:|\?BeginVMStatus:|\?EndFeatureQuery:|\?EndFileQuery:|\?EndFontListQuery:|\?EndFontQuery:|\?EndPrinterQuery:|\?EndProcSetQuery:|\?EndQuery:|\?EndResourceListQuery:|\?EndResourceQuery:|\?EndVMStatus:))\s*(.*)$\n?
+      scope: meta.Document-Structuring-Comment.postscript
+      captures:
+        1: keyword.other.DSC.postscript
+        3: string.unquoted.DSC.postscript
+    - match: '(^[ \t]+)?(?=%)'
+      captures:
+        1: punctuation.whitespace.comment.leading.postscript
+      push:
+        - match: (?!\G)
+          pop: true
+        - match: "%"
+          captures:
+            0: punctuation.definition.comment.postscript
+          push:
+            - meta_scope: comment.line.percentage.postscript
+            - match: \n
+              pop: true
+    - match: \<\<
+      captures:
+        0: punctuation.definition.dictionary.begin.postscript
+      push:
+        - meta_scope: meta.dictionary.postscript
+        - match: \>\>
+          captures:
+            0: punctuation.definition.dictionary.end.postscript
+          pop: true
+        - include: main
+    - match: '\['
+      captures:
+        0: punctuation.definition.array.begin.postscript
+      push:
+        - meta_scope: meta.array.postscript
+        - match: '\]'
+          captures:
+            0: punctuation.definition.array.end.postscript
+          pop: true
+        - include: main
+    - match: "{"
+      captures:
+        0: punctuation.definition.procedure.begin.postscript
+      push:
+        - meta_scope: meta.procedure.postscript
+        - match: "}"
+          captures:
+            0: punctuation.definition.procedure.end.postscript
+          pop: true
+        - include: main
+    - match: \<\~
+      captures:
+        0: punctuation.definition.string.begin.postscript
+      push:
+        - meta_scope: string.other.base85.postscript
+        - match: \~\>
+          captures:
+            0: punctuation.definition.string.end.postscript
+          pop: true
+        - match: '[!-z\s]+'
+        - match: .
+          scope: invalid.illegal.base85.char.postscript
+    - match: \<
+      captures:
+        0: punctuation.definition.string.begin.postscript
+      push:
+        - meta_scope: string.other.hexadecimal.postscript
+        - match: \>
+          captures:
+            0: punctuation.definition.string.end.postscript
+          pop: true
+        - match: '[0-9A-Fa-f\s]+'
+        - match: .
+          scope: invalid.illegal.hexadecimal.char.postscript
+    - match: "[0-3]?[0-9]#[0-9a-zA-Z]+"
+      comment: well, not really, but short of listing rules for all bases from 2-36 best we can do
+      scope: constant.numeric.radix.postscript
+    - match: '(\-|\+)?\d+(\.\d*)?([eE](\-|\+)?\d+)?'
+      scope: constant.numeric.postscript
+    - match: '(\-|\+)?\.\d+([eE](\-|\+)?\d+)?'
+      scope: constant.numeric.postscript
+    - match: \b(abs|add|aload|anchorsearch|and|arc|arcn|arct|arcto|array|ashow|astore|atan|awidthshow|begin|bind|bitshift|bytesavailable|cachestatus|ceiling|charpath|clear|cleartomark|cleardictstack|clip|clippath|closefile|closepath|colorimage|concat|concatmatrix|condition|configurationerror|copy|copypage|cos|count|countdictstack|countexecstack|counttomark|cshow|currentblackgeneration|currentcacheparams|currentcmykcolor|currentcolor|currentcolorrendering|currentcolorscreen|currentcolorspace|currentcolortransfer|currentcontext|currentdash|currentdevparams|currentdict|currentfile|currentflat|currentfont|currentglobal|currentgray|currentgstate|currenthalftone|currenthalftonephase|currenthsbcolor|currentlinecap|currentlinejoin|currentlinewidth|currentmatrix|currentmiterlimit|currentobjectformat|currentpacking|currentpagedevice|currentpoint|currentrgbcolor|currentscreen|currentshared|currentstrokeadjust|currentsystemparams|currenttransfer|currentundercolorremoval|currentuserparams|curveto|cvi|cvlit|cvn|cvr|cvrs|cvs|cvx|def|defaultmatrix|definefont|defineresource|defineusername|defineuserobject|deletefile|detach|deviceinfo|dict|dictfull|dictstack|dictstackoverflow|dictstackunderflow|div|dtransform|dup|echo|eexec|end|eoclip|eofill|eoviewclip|eq|erasepage|errordict|exch|exec|execform|execstack|execstackoverflow|execuserobject|executeonly|executive|exit|exp|false|file|filenameforall|fileposition|fill|filter|findencoding|findfont|findresource|flattenpath|floor|flush|flushfile|FontDirectory|for|forall|fork|ge|get|getinterval|globaldict|GlobalFontDirectory|glyphshow|grestore|grestoreall|gsave|gstate|gt|handleerror|identmatrix|idiv|idtransform|if|ifelse|image|imagemask|index|ineofill|infill|initclip|initgraphics|initmatrix|initviewclip|instroke|internaldict|interrupt|inueofill|inufill|inustroke|invalidaccess|invalidcontext|invalidexit|invalidfileaccess|invalidfont|invalidid|invalidrestore|invertmatrix|ioerror|ISOLatin1Encoding|itransform|join|kshow|known|languagelevel|le|length|limitcheck|lineto|ln|load|lock|log|loop|lt|makefont|makepattern|mark|matrix|maxlength|mod|monitor|moveto|mul|ne|neg|newpath|noaccess|nocurrentpoint|not|notify|null|nulldevice|or|packedarray|pathbbox|pathforall|pop|print|printobject|product|prompt|pstack|put|putinterval|quit|rand|rangecheck|rcurveto|read|readhexstring|readline|readonly|readstring|realtime|rectclip|rectfill|rectstroke|rectviewclip|renamefile|repeat|resetfile|resourceforall|resourcestatus|restore|reversepath|revision|rlineto|rmoveto|roll|rootfont|rotate|round|rrand|run|save|scale|scalefont|scheck|search|selectfont|serialnumber|setbbox|setblackgeneration|setcachedevice|setcachedevice2|setcachelimit|setcacheparams|setcharwidth|setcmykcolor|setcolor|setcolorrendering|setcolorscreen|setcolorspace|setcolortransfer|setdash|setdevparams|setfileposition|setflat|setfont|setglobal|setgray|setgstate|sethalftone|sethalftonephase|sethsbcolor|setlinecap|setlinejoin|setlinewidth|setmatrix|setmiterlimit|setobjectformat|setoverprint|setpacking|setpagedevice|setpattern|setrgbcolor|setscreen|setshared|setstrokeadjust|setsystemparams|settransfer|setucacheparams|setundercolorremoval|setuserparams|setvmthreshold|shareddict|show|showpage|sin|sqrt|srand|stack|stackoverflow|stackunderflow|StandardEncoding|start|startjob|status|statusdict|stop|stopped|store|string|stringwidth|stroke|strokepath|sub|syntaxerror|systemdict|timeout|transform|translate|true|truncate|type|typecheck|token|uappend|ucache|ucachestatus|ueofill|ufill|undef|undefined|undefinedfilename|undefineresource|undefinedresult|undefinefont|undefineresource|undefinedresource|undefineuserobject|unmatchedmark|unregistered|upath|userdict|UserObjects|usertime|ustroke|ustrokepath|version|viewclip|viewclippath|VMerror|vmreclaim|vmstatus|wait|wcheck|where|widthshow|write|writehexstring|writeobject|writestring|wtranslation|xcheck|xor|xshow|xyshow|yield|yshow)\b
+      scope: keyword.operator.postscript
+    - match: '//[^\(\)\<\>\[\]\{\}\/\%\s]+'
+      scope: variable.other.immediately-evaluated.postscript
+    - match: '/[^\(\)\<\>\[\]\{\}\/\%\s]+'
+      scope: variable.other.literal.postscript
+    - match: '[^\(\)\<\>\[\]\{\}\/\%\s]+'
+      comment: stuff like 22@ff will show as number 22 followed by name @ff, but should be name 22@ff!
+      scope: variable.other.name.postscript
+  string_content:
+    - match: '\\[0-7]{1,3}'
+      scope: constant.numeric.octal.postscript
+    - match: '\\(\\|[nrtbf\(\)]|[0-7]{1,3}|\r?\n)'
+      scope: constant.character.escape.postscript
+    - match: \\
+      scope: invalid.illegal.unknown-escape.postscript.ignored
     - match: \(
       push:
-        - include: inside_string_literal
-        - include: string_escaped_char
         - match: \)
           pop: true
-
-  strings:
-    - match: \(
-      scope: punctuation.definition.string.begin.ps
-      push:
-        - meta_scope: string.literal.ps
-        - match: \)
-          scope: punctuation.definition.string.end.ps
-          pop: true
-        - include: inside_string_literal
-        - include: string_escaped_char
-    - match: '<~'
-      scope: punctuation.definition.string.begin.ps
-      push:
-        - meta_scope: string.ascii.ps
-        - match: '~>'
-          scope: punctuation.definition.string.end.ps
-          pop: true
-        - match: '[^[:ascii:]]'
-          scope: invalid.illegal.unexpected-character.ps
-    - match: '<'
-      scope: punctuation.definition.string.begin.ps
-      push:
-        - meta_scope: string.hexadecimal.ps
-        - match: '>'
-          scope: punctuation.definition.string.end.ps
-          pop: true
-        - match: '[^\h ]'
-          scope: invalid.illegal.unexpected-character.ps
-
-  variables:
-    - match: //?
-      scope: punctuation.definition.variable.ps
-      push:
-        - meta_scope: variable.other.readwrite.ps
-        - match: '(?=\s)'
-          pop: true
-    - match: '[^()<>\[\]{}/%\s]+'
-      scope: variable.other.readwrite.ps
-
-  brackets:
-    - match: \[
-      scope: punctuation.definition.brackets.begin.ps
-      push:
-        - meta_scope: meta.brackets.ps
-        - match: \]
-          scope: punctuation.definition.brackets.end.ps
-          pop: true
-        - include: expressions
-    - match: \{
-      scope: punctuation.definition.brackets.begin.ps
-      push:
-        - meta_scope: meta.brackets.ps
-        - match: \}
-          scope: punctuation.definition.brackets.end.ps
-          pop: true
-        - include: expressions
-
-  dictionaries:
-    - match: '<<'
-      scope: punctuation.definition.dictionary.begin.ps
-      push:
-        - meta_scope: meta.dictionary.ps
-        - match: '>>'
-          scope: punctuation.definition.dictionary.end.ps
-          pop: true
-        - include: expressions
-
-  operators:
-    - match: '\b(add|div|idiv|mod|mul|sub|abs|neg|ceiling|floor|round|truncate|sqrt|atan|cos|sin|exp|ln|log|rand|srand|rrand|and|not|or|xor|bitshift)\b'
-      scope: keyword.operator.arithmetic.ps
-    - match: '\b(pop|exch|dup|index|roll|clear|count|mark|cleartomark|counttomark)\b'
-      scope: keyword.operator.stack.ps
-    - match: '\b(array|astore|aload|packedarray|setpacking|currentpacking)\b'
-      scope: keyword.operator.array.ps
-    - match: '\b(dict|maxlength|begin|end|def|load|store|undef|known|where|currentdict|countdictstack|dictstack|cleardictstack)\b'
-      scope: keyword.operator.dictionary.ps
-    - match: '\b(string|anchorsearch|search)\b'
-      scope: keyword.operator.string.ps
-    - match: '\b(eq|ne|ge|gt|le|lt)\b'
-      scope: keyword.operator.comparison.ps
-    - match: '\b(exec|if|ifelse|forall|for|repeat|loop|exit|stop|stopped|countexecstack|execstack|quit|start)\b'
-      scope: keyword.operator.control.ps
-    - match: '\b(type|cvlit|cvx|xcheck|executeonly|noaccess|readonly|rcheck|wcheck|cvi|cvn|cvr|cvrs|cvs)\b'
-      scope: keyword.operator.type.ps
-    - match: '(\b(file|filter|closefile|read|write|readhexstring|writehexstring|readstring|writestring|readline|bytesavailable|flush|flushfile|resetfile|status|run|currentfile|deletefile|renamefile|filenameforall|setfileposition|fileposition|print|stack|pstack|printobject|writeobject|setobjectformat|currentobjectformat)\b|\=\=|\=)'
-      scope: keyword.operator.file.ps
-    - match: '\b(defineresource|undefineresource|findresource|findcolorrendering|resourcestatus|resourceforall)\b'
-      scope: keyword.operator.resource.ps
-    - match: '\b(save|restore|setglobal|currentglobal|gcheck|startjob|defineuserobject|execuserobject|undefineuserobject|UserObjects)\b'
-      scope: keyword.operator.virtual-memory.ps
-    - match: '\b(gsave|grestore|clipsave|cliprestore|grestoreall|initgraphics|gstate|setgstate|currentgstate|setlinewidth|currentlinewidth|setlinecap|currentlinecap|setlinejoin|currentlinejoin|setmiterlimit|currentmiterlimit|setstrokeadjust|currentstrokeadjust|setdash|currentdash|setcolorspace|currentcolorspace|setcolor|currentcolor|setgray|currentgray|sethsbcolor|currenthsbcolor|setrgbcolor|currentrgbcolor|setcmykcolor|currentcmykcolor|sethalftone|currenthalftone|setscreen|currentscreen|setcolorscreen|currentcolorscreen|settransfer|setcolortransfer|currentcolortransfer|currenttransfer|setblackgeneration|currentblackgeneration|setundercolorremoval|currentundercolorremoval|setcolorrendering|setflat|currentcolorrendering|setoverprint|currentflat|currentoverprint|setsmoothness|currentsmoothness)\b'
-      scope: keyword.operator.graphic-state.ps
-    - match: '\b(concat|concatmatrix|currentmatrix|defaultmatrix|dtransform|identmatrix|idtransform|initmatrix|invertmatrix|itransform|matrix|rotate|scale|setmatrix|transform|translate)\b'
-      scope: keyword.operator.matrix.ps
-    - match: '\b(arc|arcn|arct|arcto|charpath|clip|clippath|closepath|currentpoint|curveto|eoclip|flattenpath|initclip|lineto|moveto|newpath|pathbbox|pathforall|rcurveto|rectclip|reversepath|rlineto|rmoveto|setbbox|strokepath|uappend|ucache|upath|ustrokepath)\b'
-      scope: keyword.operator.path.ps
-    - match: '\b(colorimage|eofill|erasepage|fill|image|imagemask|rectfill|rectstroke|shfill|stroke|ueofill|ufill|ustroke)\b'
-      scope: keyword.operator.paint.ps
-    - match: '\b(infill|ineofill|inufill|inueofill|instroke|inustroke)\b'
-      scope: keyword.operator.insideness.ps
-    - match: '\b(makepattern|setpattern|execform)\b'
-      scope: keyword.operator.pattern.ps
-    - match: '\b(showpage|copypage|setpagedevice|currentpagedevice|nulldevice)\b'
-      scope: keyword.operator.device.ps
-    - match: '\b(ashow|awidthshow|composefont|cshow|currentfont|definefont|findencoding|findfont|glyphshow|ISOLatin1Encoding|kshow|makefont|rootfont|scalefont|selectfont|setcachedevice|setcachedevice2|setcharwidth|setfont|show|StandardEncoding|stringwidth|undefinefont|widthshow|xshow|xyshow|yshow)\b'
-      scope: keyword.operator.font.ps
-    - match: '\b(cachestatus|currentcacheparams|currentdevparams|currentsystemparams|currentuserparams|setcachelimit|setcacheparams|setdevparams|setsystemparams|setucacheparams|setuserparams|setvmthreshold|ucachestatus|vmreclaim|vmstatus|)\b'
-      scope: keyword.operator.interpreter.ps
-    - match: '\b(getinterval|putinterval|length|get|put|copy|bind|echo|version|realtime|usertime|languagelevel|product|revision|serialnumber|executive|prompt|token)\b'
-      scope: keyword.operator.ps
-
-  constants:
-    - match: '\b(true|false|null)\b'
-      scope: constant.language.ps
-    - match: '\b(\$error|errordict|FontDirectory|globaldict|GlobalFontDirectory|statusdict|systemdict|userdict)\b'
-      scope: constant.other.dictionary.ps
+        - include: string_content
