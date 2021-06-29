@@ -19,7 +19,7 @@ variables:
   key_value: '[^% \n\r]'
 
 contexts:
-  prototype:
+  toplevel:
     # escape characters
     - include: escape
     # fields
@@ -340,7 +340,7 @@ contexts:
       with_prototype:
         - match: $
           pop: true
-        - include: prototype
+        - include: toplevel
 
   instruction-field:
     - comment: Instruction Field
@@ -371,7 +371,7 @@ contexts:
       with_prototype:
         - match: $
           pop: true
-        - include: prototype
+        - include: toplevel
 
   inline-instruction:
     - comment: Inline Instruction Field
@@ -582,7 +582,7 @@ contexts:
       push:
         - meta_scope: meta.typeset.abc
         - meta_content_scope: string.unquoted.typeset.abc
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endtext)'
           captures:
             1: comment.line.percentage.abc
@@ -595,7 +595,7 @@ contexts:
         2: support.function.directive.abc
       push: 'scope:text.html.basic'
       with_prototype:
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endml)'
           captures:
             1: comment.line.percentage.abc
@@ -608,7 +608,7 @@ contexts:
         2: support.function.directive.abc
       push: 'scope:source.js'
       with_prototype:
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endjs)'
           captures:
             1: comment.line.percentage.abc
@@ -621,7 +621,7 @@ contexts:
         2: support.function.directive.abc
       push: 'scope:text.xml'
       with_prototype:
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endsvg)'
           captures:
             1: comment.line.percentage.abc
@@ -635,7 +635,7 @@ contexts:
         3: variable.parameter.directive.abc
       push: 'scope:source.ps'
       with_prototype:
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endps)'
           captures:
             1: comment.line.percentage.abc
@@ -652,7 +652,7 @@ contexts:
         2: support.function.directive.abc
       push: 'scope:text.html.markdown'
       with_prototype:
-        - include: prototype
+        - include: toplevel
         - match: '(%%)\s*(endmd)'
           captures:
             1: comment.line.percentage.abc

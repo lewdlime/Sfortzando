@@ -9,9 +9,6 @@ variables:
   field_value: '[^%\n\r]'
 
 contexts:
-  prototype:
-    - include: comments
-
   main:
     - include: directive
     - include: embedded-content
